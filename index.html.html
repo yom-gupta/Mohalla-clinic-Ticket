@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ticket Generator</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            margin: 20px auto;
+            max-width: 400px;
+        }
+
+        h1 {
+            color: #007BFF;
+        }
+
+        input {
+            width: 90%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+        }
+
+        .modal-content {
+            background-color: white;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 20px;
+            text-align: left;
+        }
+
+        .close {
+            position: absolute;
+            top: 0;
+            right: 0;
+            padding: 10px;
+            cursor: pointer;
+            font-size: 20px;
+            color: #007BFF;
+        }
+
+        #downloadTicketBtn {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin-top: 10px;
+            cursor: pointer;
+        }
+        .tic{
+           
+            
+            font-size: 200px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Mohalla clinic Ticket</h1>
+        <input type="text" id="nameInput" placeholder="Your Name">
+        <input type="text" id="houseNoInput" placeholder="House No">
+        <input type="text" id="phoneNoInput" placeholder="Phone No">
+        <button id="generateTicketBtn">Get Ticket</button>
+
+        <div id="ticketModal" class="modal">
+            <div class="modal-content"  >
+                
+                <span class="close" id="closeModal">&times;</span>
+                 <h2 style="text-decoration: underline;">Mohalla clinic Ticket</h2>
+                <h3>Your Ticket Information</h3>
+                <div style="text-align: center;">
+                <span  class="tic" id="ticketNumber"></span>
+                <p><strong>Ticket Number</strong> </p></div>
+                <p><strong>Name:</strong> <span id="userName"></span></p>
+                <p><strong>House No:</strong> <span id="userHouseNo"></span></p>
+                <p><strong>Phone No:</strong> <span id="userPhoneNo"></span></p>
+                <p><strong>Date & Time:</strong> <span id="dateTime"></span></p>
+                <button id="downloadTicketBtn">Download Ticket</button>
+            </div>
+            
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dom-to-image/2.6.0/dom-to-image.min.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const generateTicketBtn = document.getElementById("generateTicketBtn");
+            const ticketModal = document.getElementById("ticketModal");
+            const closeModal = document.getElementById("closeModal");
+            const downloadTicketBtn = document.getElementById("downloadTicketBtn");
+
+            // Define the domtoimage variable
+            const domtoimage = window.domtoimage;
+
+            generateTicketBtn.addEventListener("click", function () {
+                // Get user input
+                const userName = document.getElementById("nameInput").value;
+                const userHouseNo = document.getElementById("houseNoInput").value;
+                const userPhoneNo = document.getElementById("phoneNoInput").value;
+                const ticketNumber = "1"; // You can generate the ticket number as needed.
+                const dateTime = new Date().toLocaleString();
+
+                // Display user input in the modal
+                document.getElementById("userName").textContent = userName;
+                document.getElementById("userHouseNo").textContent = userHouseNo;
+                document.getElementById("userPhoneNo").textContent = userPhoneNo;
+                document.getElementById("ticketNumber").textContent = ticketNumber;
+                document.getElementById("dateTime").textContent = dateTime;
+
+                ticketModal.style.display = "block";
+            });
+
+            closeModal.addEventListener("click", function () {
+                ticketModal.style.display = "none";
+            });
+
+            downloadTicketBtn.addEventListener("click", () => {
+                let ticket = document.getElementById('ticketModal');
+                domtoimage.toPng(ticket).then((data) => {
+                    var link = document.createElement("a");
+                    link.download = "Mohalla-clinic-Ticket.png";
+                    link.href = data;
+                    link.click();
+                });
+            });
+        });
+    </script>
+</body>
+</html>
